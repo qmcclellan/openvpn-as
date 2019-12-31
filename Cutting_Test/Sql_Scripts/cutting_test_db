@@ -1,0 +1,51 @@
+/*for cutting test java website*/
+
+CREATE DATABASE IF NOT EXISTS cutting_test ;
+
+USE cutting_test;
+
+CREATE TABLE IF NOT EXISTS cutter(
+	id int auto_increment primary key,
+    first_name varchar(30),
+    last_name varchar(100),
+    date_started timestamp,
+    number_of_years int );
+
+CREATE TABLE IF NOT EXISTS category(
+	id int AUTO_INCREMENT NOT NULL PRIMARY KEY,
+    category_name varchar(30));
+    
+CREATE TABLE IF NOT EXISTS PRIMAL(  
+	id INT AUTO_INCREMENT NOT NULL PRIMARY KEY, 
+    primal_name varchar(30), 
+    costLb decimal(10, 2),
+    retailLb decimal(10,2),
+    categoryId int  );
+    
+  ALTER TABLE Primal ADD CONSTRAINT fk_category FOREIGN KEY (categoryId) REFERENCES category(id);
+  
+CREATE TABLE IF NOT EXISTS test(
+	id int AUTO_INCREMENT NOT NULL PRIMARY KEY, 
+    cutter_id int  NOT NULL,
+    primal_id int NOT NULL,
+    weight decimal(10,2) NOT NULL,
+    trim decimal(10,2) NOT NULL
+    );
+    
+    ALTER TABLE test ADD CONSTRAINT fk_cutter_id FOREIGN KEY (cutter_id) REFERENCES cutter(id);
+    ALTER TABLE test ADD CONSTRAINT fk_primal_id FOREIGN KEY (primal_id) REFERENCES primal(id);
+    
+CREATE TABLE IF NOT EXISTS results(
+	id int AUTO_INCREMENT NOT NULL PRIMARY KEY,
+    wholesale_cost decimal(10,2) NOT NULL,
+    profit_margin decimal(10,2) NOT NULL,
+    yield decimal(10,2),
+    edible_weight decimal(10,2),
+    edible_cost decimal(10,2) NOT NULL,
+    edible_retail decimal(10,2) NOT NULL,
+    cost_of_usable_product decimal(10,2),
+    value_of_usable_product decimal(10,2)
+    ); 
+   
+    ALTER TABLE results ADD COLUMN testId;
+   ALTER TABLE results ADD CONSTRAINT fk_tes_tId foreign key (testId) REFERENCES test(id);

@@ -1,85 +1,122 @@
 package cuttingClasses;
 
-import java.util.Date;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.sql.DataSource;
 
 
 public class CuttingTest{
-	int id;
+	
 	Formulas formula;
 	Primal primal;
-	double weight;
-	double trim;
-	Date date;
+	Test test;
 	
-	double profitMargin;
+	int id;
+	int primalId;
+	int testId;
 	double wholesaleCost;
+	double profitMargin;
 	double yield;
 	double epWeight;
 	double epCost;
 	double epRetail;
 	double valueOfUsableProduct;
-	double costOfUsableProduct;
+	double costOfUsableProduct; 
 	
+	//no arg constructor for database initialization
 	public CuttingTest() {
 		
 	}
 	
-	public CuttingTest(Primal primal,double weight, double trim) {
+	public CuttingTest(Test test,Primal primal) {
+		 this.test = test;
 		 this.primal = primal;
-		 this.weight = weight;
-		 this.trim = trim;
-		 this.date = new Date();
+		 getResults();
+	}
+	
+	public CuttingTest(int primalId, double weight, double trim, double wholesaleCost, double profitMargin,
+			 double yield, double epWeight, double epCost, double epRetail,
+			double valueOfUsableProduct, double costOfUsableProduct) {
+		
+		this.primalId = primalId;
+		this.wholesaleCost = wholesaleCost;
+		this.profitMargin = profitMargin;
+		this.yield = yield;
+		this.epWeight = epWeight;
+		this.epCost = epCost;
+		this.epRetail = epRetail;
+		this.valueOfUsableProduct = valueOfUsableProduct;
+		this.costOfUsableProduct = costOfUsableProduct;
+	}
+	
+	//constructor needed for database
+	public CuttingTest(int id, int primalId, double weight, double trim,double wholesaleCost, double profitMargin,
+			 double yield, double epWeight, double epCost, double epRetail,
+			double valueOfUsableProduct, double costOfUsableProduct) {
+		
+		this.id = id;
+		this.primalId = primalId;
+		this.wholesaleCost = wholesaleCost;
+		this.profitMargin = profitMargin;
+		this.yield = yield;
+		this.epWeight = epWeight;
+		this.epCost = epCost;
+		this.epRetail = epRetail;
+		this.valueOfUsableProduct = valueOfUsableProduct;
+		this.costOfUsableProduct = costOfUsableProduct;
+	}
+
+	
+
+	public void getResults() {
+		wholesaleCost();
+		 profitMargin();
+		 yieldTest();
+		 epWeight();
+		 epCost();
+		 epRetail();
+		 valueOfUsableProduct();
+		 costOfUsableProduct();
+		 
 	}
 	
 
-	
-	public void profitMargin(Primal primal) {
+	public void profitMargin() {
 		double pMargin = formula.profitMargin(primal.getCostLb(), primal.getRetailLb());
 		this.profitMargin = pMargin;
 	}
 
-	public void wholesaleCost(Primal primal, double weight) {
-		double wholeCost = formula.wholesaleCost(primal.getCostLb(), weight);
+	public void wholesaleCost() {
+		double wholeCost = formula.wholesaleCost(primal.getCostLb(), test.getWeight());
 		this.wholesaleCost = wholeCost;
 	}
 
 	
-	public void yieldTest(double epWeight, double weight) {
-		double yield = formula.yieldTest(epWeight, weight);
+	public void yieldTest() {
+		double yield = formula.yieldTest(epWeight, test.getWeight());
 		this.yield = yield;
 	}
 
-	public void epWeight(double weight, double trim) {
-		double epWeight = formula.epWeight(weight, trim);
+	public void epWeight() {
+		double epWeight = formula.epWeight(test.getWeight(), test.getTrim());
 		this.epWeight = epWeight;
 	}
 
-	public void epCost(double epWeight, double yield) {
+	public void epCost() {
 		double epCost = formula.epCost(epWeight, yield);
 		this.epCost = epCost;
 	}
 
 	
-	public void epRetail(double epWeight, Primal primal) {
+	public void epRetail() {
 		double epRetail = formula.epRetail(epWeight, primal.getRetailLb());
 		this.epRetail = epRetail;
 	}
 
-	public void valueOfUsableProduct(double apCost, double wasteWeight,  double costLb) {
-		double vup = formula.valueOfUsableProduct(apCost, wasteWeight, costLb);
+	public void valueOfUsableProduct() {
+		double vup = formula.valueOfUsableProduct(this.wholesaleCost, test.getTrim(), primal.getCostLb());
 		this.valueOfUsableProduct = vup;
 	}
 
-	public void costOfUsableProduct(double epRetail, double epWeight) {
-		double cup = formula.costOfUsableProduct(epRetail, epWeight);
+	public void costOfUsableProduct() {
+		double cup = formula.costOfUsableProduct(this.epRetail, this.epWeight);
 		this.costOfUsableProduct = cup;
 		
 	}
@@ -93,80 +130,71 @@ public class CuttingTest{
 		this.id = id;
 	}
 
-
-	public double getWeight() {
-		return weight;
+	public double getProfitMargin() {
+		return profitMargin;
 	}
 
-
-	public void setWeight(double weight) {
-		this.weight = weight;
+	public void setProfitMargin(double profitMargin) {
+		this.profitMargin = profitMargin;
 	}
 	
-	
-// inner class for database utility
 
-
-	 public class TestDbUtil {
-
-		DataSource dataSource;
-		
-	public TestDbUtil(DataSource theDataSource) {
-			
-			this.dataSource = theDataSource;
-			
+	public double getWholesaleCost() {
+		return wholesaleCost;
 	}
 
-	public void close(Connection conn, Statement myStmt, ResultSet myRs) throws SQLException {
-		//method use to close all connections
-		
-		if(conn != null) {
-			conn.close();
-			
-		}else if(myStmt != null) {
-			myStmt.close();
-			
-		}else if(myRs != null) {
-			myRs.close();
-		}
+	public void setWholesaleCost(double wholesaleCost) {
+		this.wholesaleCost = wholesaleCost;
 	}
 
-	public List<CuttingTest> getTestList(){
-		List<CuttingTest> testList = new ArrayList<>();
-		
-		return testList;
+	public double getYield() {
+		return yield;
 	}
 
-	public CuttingTest getTest(String testId) {
-		CuttingTest test = new CuttingTest();//delete no arg constructor
-		
-		return test;
+	public void setYield(double yield) {
+		this.yield = yield;
 	}
 
-	public void addTest(CuttingTest test) {
-		
+	public double getEpWeight() {
+		return epWeight;
 	}
 
-	public void updateTest(CuttingTest cuttingTest) {
-		
+	public void setEpWeight(double epWeight) {
+		this.epWeight = epWeight;
 	}
 
-	public void deleteTest(String testId) {
-		
+	public double getEpCost() {
+		return epCost;
 	}
 
-	 }
+	public void setEpCost(double epCost) {
+		this.epCost = epCost;
+	}
 
+	public double getEpRetail() {
+		return epRetail;
+	}
 
+	public void setEpRetail(double epRetail) {
+		this.epRetail = epRetail;
+	}
 
+	public double getValueOfUsableProduct() {
+		return valueOfUsableProduct;
+	}
 
+	public void setValueOfUsableProduct(double valueOfUsableProduct) {
+		this.valueOfUsableProduct = valueOfUsableProduct;
+	}
 
+	public double getCostOfUsableProduct() {
+		return costOfUsableProduct;
+	}
 
+	public void setCostOfUsableProduct(double costOfUsableProduct) {
+		this.costOfUsableProduct = costOfUsableProduct;
+	}
 
 	
-	
-	
-	
-	
-	
+
 }

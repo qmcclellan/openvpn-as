@@ -1,6 +1,6 @@
 package cuttingClasses;
 
-public class Formulas {
+public abstract class Formulas {
 	
 	
 	public double profitMargin(double cost, double retail) {
