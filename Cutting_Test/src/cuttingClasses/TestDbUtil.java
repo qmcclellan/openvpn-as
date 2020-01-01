@@ -10,6 +10,8 @@ import java.util.List;
 
 import javax.sql.DataSource;
 
+
+
 public class TestDbUtil{
 	DataSource dataSource;
 	
@@ -103,7 +105,7 @@ public class TestDbUtil{
 		
 		myConn = dataSource.getConnection();
 		
-		//create sql strin
+		//create sql string
 		
 		String sql = " select * test where id =?";
 		
@@ -133,6 +135,46 @@ public class TestDbUtil{
 	}finally {
 		close(myConn, myStmt, myRs);
 	}
+	}
+	
+public void updateStudent(Test theTest) throws Exception {
+		
+		Connection myConn = null;
+		PreparedStatement myStmt = null;
+		
+		try {
+		// get db connection
+		
+		myConn= dataSource.getConnection();
+		
+		//create sql statements
+		
+		String sql = "update test "
+		+"set cutterName =?, cutterId=?, primalName=?, primalId=?, weight=?, trim=?, waste=? "
+		+"where id=?";
+		
+		//prepare statement
+		
+		myStmt = myConn.prepareStatement(sql);
+		
+		//set params
+		
+		myStmt.setString(1, theTest.getCutterName());
+		myStmt.setInt(2, theTest.getCutterId());
+		myStmt.setString(3, theTest.getPrimalName());
+		myStmt.setInt(4, theTest.getPrimalId());
+		myStmt.setDouble(5, theTest.getWeight());
+		myStmt.setDouble(6, theTest.getTrim());
+		myStmt.setDouble(5, theTest.getWaste());
+		
+		//execute sql
+		
+		myStmt.execute();
+		
+	}
+		finally {
+			close(myConn, myStmt, null);
+		}
 	}
 	
 	public void addTest(Test theTest) throws SQLException {
@@ -179,6 +221,7 @@ public class TestDbUtil{
 	public void deleteTest(String theTestId) throws SQLException {
 		//variables
 		int testId;
+		
 		Connection myConn = null;
 		PreparedStatement myStmt = null;
 		
