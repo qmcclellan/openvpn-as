@@ -127,8 +127,16 @@ public class TestDbUtil{
 		//process results
 		while(myRs.next()) {
 
+			//retrieve data from each row
+			String cutterName = myRs.getString("cutterName");
+			int cutterId = myRs.getInt("cutterId");
+			String primalName = myRs.getString("primalName");
+			int primalId = myRs.getInt("primalId");
+			double weight = myRs.getDouble("weight");
+			double trim = myRs.getDouble("trim");
+			double waste = myRs.getDouble("waste");
 			
-			
+			test = new Test(cutterName, cutterId, primalName, primalId, weight, trim, waste);
 		}
 		return test;
 		
@@ -137,7 +145,7 @@ public class TestDbUtil{
 	}
 	}
 	
-public void updateStudent(Test theTest) throws Exception {
+public void updateTest(Test theTest) throws Exception {
 		
 		Connection myConn = null;
 		PreparedStatement myStmt = null;

@@ -1,11 +1,11 @@
 package cuttingClasses;
 
 public class Results extends Formulas{
-	private int testId;
+	private int resultId;
 	private Test test;
-	private Primal primal;
-	double profitMargin;
+	int testId;
 	double wholesaleCost;
+	double profitMargin;
 	double yield;
 	double epWeight;
 	double epCost;
@@ -13,184 +13,220 @@ public class Results extends Formulas{
 	double valueOfUsableProduct;
 	double costOfUsableProduct;
 	
+	public Results() {
+		
+	}
 	
-	public Results(double profitMargin, double wholesaleCost, double yield, double epWeight, double epCost,
-			double epRetail, double valueOfUsableProduct, double costOfUsableProduct) {
-		super();
-		this.profitMargin = profitMargin;
-		this.wholesaleCost = wholesaleCost;
-		this.yield = yield;
-		this.epWeight = epWeight;
-		this.epCost = epCost;
-		this.epRetail = epRetail;
-		this.valueOfUsableProduct = valueOfUsableProduct;
-		this.costOfUsableProduct = costOfUsableProduct;
+	public Results(int resultId, Test test) {
+		getResults();
+		
 	}
-
-
-	public Results(Test test, double profitMargin, double wholesaleCost, double yield, double epWeight, double epCost,
-			double epRetail, double valueOfUsableProduct, double costOfUsableProduct) {
-		super();
-		this.testId = test.getId();
-		this.profitMargin = profitMargin;
-		this.wholesaleCost = wholesaleCost;
-		this.yield = yield;
-		this.epWeight = epWeight;
-		this.epCost = epCost;
-		this.epRetail = epRetail;
-		this.valueOfUsableProduct = valueOfUsableProduct;
-		this.costOfUsableProduct = costOfUsableProduct;
+	
+	public Results(Test test) {
+		
+		getResults();
 	}
-
-
-	public int getTestId() {
-		return testId;
-	}
-
-
-	public void setTestId(int testId) {
+	
+	public Results(int resultId, int testId, double wholesaleCost, double margin,
+			 double epWeight, double epCost, double yield, double epRetail, 
+			double valueUsableProduct, double costUsableProduct  ) {
+		
+		this.resultId = resultId;
 		this.testId = testId;
-	}
-
-
-	public double getProfitMargin() {
-		return profitMargin;
-	}
-
-
-	public void setProfitMargin(double profitMargin) {
-		this.profitMargin = profitMargin;
-	}
-
-
-	public double getWholesaleCost() {
-		return wholesaleCost;
-	}
-
-
-	public void setWholesaleCost(double wholesaleCost) {
-		this.wholesaleCost = wholesaleCost;
-	}
-
-
-	public double getYield() {
-		return yield;
-	}
-
-
-	public void setYield(double yield) {
-		this.yield = yield;
-	}
-
-
-	public double getEpWeight() {
-		return epWeight;
-	}
-
-
-	public void setEpWeight(double epWeight) {
+		this.wholesaleCost =  wholesaleCost;
+		this.profitMargin = margin;
 		this.epWeight = epWeight;
-	}
-
-
-	public double getEpCost() {
-		return epCost;
-	}
-
-
-	public void setEpCost(double epCost) {
 		this.epCost = epCost;
-	}
-
-
-	public double getEpRetail() {
-		return epRetail;
-	}
-
-
-	public void setEpRetail(double epRetail) {
+		this.yield = yield;
 		this.epRetail = epRetail;
+		this.valueOfUsableProduct = valueUsableProduct;
+		this.costOfUsableProduct = costUsableProduct;
+		
 	}
-
-
-	public double getValueOfUsableProduct() {
-		return valueOfUsableProduct;
+	
+	public Results(int testId, double wholesaleCost, double margin, 
+			 double epWeight, double epCost, double yield, double epRetail, 
+			double valueUsableProduct, double costUsableProduct  ) {
+		
+		this.testId = testId;
+		this.wholesaleCost =  wholesaleCost;
+		this.profitMargin = margin;
+		this.epWeight = epWeight;
+		this.epCost = epCost;
+		this.yield = yield;
+		this.epRetail = epRetail;
+		this.valueOfUsableProduct = valueUsableProduct;
+		this.costOfUsableProduct = costUsableProduct;
+		
 	}
-
-
-	public void setValueOfUsableProduct(double valueOfUsableProduct) {
-		this.valueOfUsableProduct = valueOfUsableProduct;
-	}
-
-
-	public double getCostOfUsableProduct() {
-		return costOfUsableProduct;
-	}
-
-
-	public void setCostOfUsableProduct(double costOfUsableProduct) {
-		this.costOfUsableProduct = costOfUsableProduct;
-	}
-
-
-	@Override
-	public double profitMargin(double cost, double retail) {
-		return profitMargin(cost, retail);
-	}
-
+	
 	public void getResults() {
 		wholesaleCost();
 		 profitMargin();
-		 yieldTest();
 		 epWeight();
 		 epCost();
 		 epRetail();
+		 yieldTest();
 		 valueOfUsableProduct();
 		 costOfUsableProduct();
 		 
 	}
-	
 
-	public void profitMargin() {
-		double pMargin = profitMargin(primal.getCostLb(), primal.getRetailLb());
-		this.profitMargin = pMargin;
-	}
-
-	public void wholesaleCost() {
-		double wholeCost = wholesaleCost(primal.getCostLb(), test.getWeight());
-		this.wholesaleCost = wholeCost;
+	public double wholesaleCost() {
+		double wholesaleCost = super.wholesaleCost(test.getWeight(), test.getPrimal().getCostLb());
+		this.setWholesaleCost(wholesaleCost);
+		return wholesaleCost;
 	}
 
 	
-	public void yieldTest() {
-		double yield = yieldTest(epWeight, test.getWeight());
+	public double profitMargin() {
+		double profitMargin = super.profitMargin(test.getPrimal().getCostLb(), test.getPrimal().getRetailLb());
+		this.setProfitMargin(profitMargin);
+		return profitMargin ;
+	}
+	
+	public double epWeight() {
+		double epWeight = super.epWeight(test.getWeight(), test.getTrim());
+		this.setEpWeight(epWeight);
+		return epWeight ;
+	}
+
+	
+	public double epCost() {
+		double epCost =  super.epCost(this.epWeight, this.yield);
+		this.setEpCost(epCost);
+		return epCost;
+	}
+		
+	
+	public double yieldTest() {	
+		double yield = super.yieldTest(this.epWeight, test.getWeight());
+		this.setYield( yield);
+		return yield;
+	}
+	
+
+	
+	public double epRetail() {
+		double epRetail = super.epRetail(this.epWeight, test.getPrimal().getRetailLb());
+		this.setEpRetail(epRetail);
+		return epRetail;
+				
+	}
+
+	
+	public double valueOfUsableProduct() {
+		double vup = super.valueOfUsableProduct(getWholesaleCost(), test.getWaste(), test.getPrimal().getCostLb());
+		this.setValueOfUsableProduct(vup);
+		return vup;
+	}
+
+	
+	public double costOfUsableProduct() {
+		double cup =  super.costOfUsableProduct(getEpRetail(), getEpWeight());
+		this.setCostOfUsableProduct(cup);
+		return cup;
+	}
+
+	@Override
+	public String toString() {
+		return "Results [resultId=" + resultId + ", test=" + test + ", testId=" + testId + ", profitMargin="
+				+ profitMargin + ", wholesaleCost=" + wholesaleCost + ", yield=" + yield + ", epWeight=" + epWeight
+				+ ", epCost=" + epCost + ", epRetail=" + epRetail + ", valueOfUsableProduct=" + valueOfUsableProduct
+				+ ", costOfUsableProduct=" + costOfUsableProduct + "]";
+	}
+	
+
+	public synchronized int getResultId() {
+		return resultId;
+	}
+
+	public synchronized void setResultId(int resultId) {
+		this.resultId = resultId;
+	}
+
+	public synchronized Test getTest() {
+		return test;
+	}
+
+	public synchronized void setTest(Test test) {
+		this.test = test;
+	}
+
+	public synchronized int getTestId() {
+		return testId;
+	}
+
+	public synchronized void setTestId(int testId) {
+		this.testId = testId;
+	}
+	
+	public synchronized double getWholesaleCost() {
+		return wholesaleCost;
+	}
+
+	public synchronized void setWholesaleCost(double wholesaleCost) {
+		this.wholesaleCost = wholesaleCost;
+	}
+
+	public synchronized double getProfitMargin() {
+		return profitMargin;
+	}
+
+	public synchronized void setProfitMargin(double profitMargin) {
+		this.profitMargin = profitMargin;
+	}
+
+	
+	public synchronized double getYield() {
+		return yield;
+	}
+
+	public synchronized void setYield(double yield) {
 		this.yield = yield;
 	}
 
-	public void epWeight() {
-		double epWeight = epWeight(test.getWeight(), test.getTrim());
+	public synchronized double getEpWeight() {
+		return epWeight;
+	}
+
+	public synchronized void setEpWeight(double epWeight) {
 		this.epWeight = epWeight;
 	}
 
-	public void epCost() {
-		double epCost = epCost(epWeight, yield);
+	public synchronized double getEpCost() {
+		return epCost;
+	}
+
+	public synchronized void setEpCost(double epCost) {
 		this.epCost = epCost;
 	}
 
-	
-	public void epRetail() {
-		double epRetail = epRetail(epWeight, primal.getRetailLb());
+	public synchronized double getEpRetail() {
+		return epRetail;
+	}
+
+	public synchronized void setEpRetail(double epRetail) {
 		this.epRetail = epRetail;
 	}
 
-	public void valueOfUsableProduct() {
-		double vup = valueOfUsableProduct(this.wholesaleCost, test.getTrim(), primal.getCostLb());
-		this.valueOfUsableProduct = vup;
+	public synchronized double getValueOfUsableProduct() {
+		return valueOfUsableProduct;
 	}
 
-	public void costOfUsableProduct() {
-		double cup = costOfUsableProduct(this.epRetail, this.epWeight);
-		this.costOfUsableProduct = cup;
-		
+	public synchronized void setValueOfUsableProduct(double valueOfUsableProduct) {
+		this.valueOfUsableProduct = valueOfUsableProduct;
 	}
+
+	public synchronized double getCostOfUsableProduct() {
+		return costOfUsableProduct;
+	}
+
+	public synchronized void setCostOfUsableProduct(double costOfUsableProduct) {
+		this.costOfUsableProduct = costOfUsableProduct;
+	}
+	
+	
+	
+
 }

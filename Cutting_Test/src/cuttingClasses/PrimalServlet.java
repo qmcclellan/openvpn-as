@@ -47,7 +47,7 @@ public class PrimalServlet extends HttpServlet {
 			
 		String theCommand = request.getParameter("COMMAND");
 		try {
-			if(theCommand != null) {
+			if(theCommand == null) {
 				theCommand= "LIST";	
 				}
 			switch(theCommand) {
@@ -233,7 +233,7 @@ public class PrimalServlet extends HttpServlet {
 		
 		//get parameter
 		
-		request.setAttribute("PRIMAL_LIST", primalList);
+		request.setAttribute("Primal_List", primalList);
 		
 		//get request
 		

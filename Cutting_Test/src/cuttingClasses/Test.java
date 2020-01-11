@@ -1,10 +1,10 @@
 package cuttingClasses;
 
-
 public class Test {
+
+	private int id;
 	private Cutter cutter;
 	private Primal primal;
-	private int id;
 	private String cutterName;
 	private int cutterId;
 	private String primalName;
@@ -12,8 +12,7 @@ public class Test {
 	private double weight;
 	private double trim;
 	private double waste;
-	
-	
+
 	public Test(Cutter cutter, Primal primal, double weight, double trim, double waste) {
 		this.setCutter(cutter);
 		this.primal = primal;
@@ -25,8 +24,9 @@ public class Test {
 		this.trim = trim;
 		this.waste = waste;
 	}
-	
-	public Test(int id,String cutterName, int cutterId, String primalName, int primalId, double weight, double trim, double waste) {
+
+	public Test(int id, String cutterName, int cutterId, String primalName, int primalId, double weight, double trim,
+			double waste) {
 		this.id = id;
 		this.cutterName = cutterName;
 		this.cutterId = cutterId;
@@ -35,10 +35,32 @@ public class Test {
 		this.weight = weight;
 		this.trim = trim;
 		this.waste = waste;
-		
+
 	}
-	
-	
+
+	public Test(String cutterName, int cutterId, String primalName, int primalId, double weight, double trim, double waste) {
+
+		this.cutterName = cutterName;
+		this.cutterId = cutterId;
+		this.primalName = primalName;
+		this.primalId = primalId;
+		this.weight = weight;
+		this.trim = trim;
+		this.waste = waste;
+
+	}
+
+	public Test(String cutterName, String primalName, double weight, double trim, double waste) {
+
+		this.cutterName = cutterName;
+		this.cutterId = cutter.getId();
+		this.primalName = primalName;
+		this.primalId = primal.getId();
+		this.weight = weight;
+		this.trim = trim;
+		this.waste = waste;
+
+	}
 
 	@Override
 	public String toString() {
@@ -125,7 +147,5 @@ public class Test {
 	public synchronized void setPrimal(Primal primal) {
 		this.primal = primal;
 	}
-	
-	
 
 }

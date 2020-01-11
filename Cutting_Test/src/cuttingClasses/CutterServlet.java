@@ -42,7 +42,7 @@ public class CutterServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String theCommand = request.getParameter("COMMAND");
+		String theCommand = request.getParameter("command");
 		
 		if(theCommand == null) {
 			theCommand = "DEFAULT";

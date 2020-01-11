@@ -9,6 +9,7 @@ public class Primal {
 	private Double retailLb;
 	
 	
+	
 
 	public Primal(String primal, Double costLb) {
 		this.name = primal;
@@ -22,8 +23,6 @@ public class Primal {
 		this.retailLb = retailLb;
 	}
 
-
-
 	public Primal(String primal, String cat, Double costLb, Double retailLb) {
 		this.name = primal;
 		this.costLb = costLb;
@@ -36,10 +35,9 @@ public class Primal {
 		this.name = primal;
 		this.costLb = costLb;
 		this.retailLb = retailLb;
-		this.category = setCategory(cat);
+		this.category = setCategory(cat.toLowerCase());
 	}
 	
-
 
 	public Primal(String name, String category) {
 		this.name = name;
